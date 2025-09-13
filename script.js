@@ -28,8 +28,33 @@ function stop() {
     video.currentTime = 0;
 }
 
+// Update and set progress
+function updateProgress() {
+    progress.value = (video.currentTime / video.duration) * 100;
+
+    // Get minutes
+    let minutes = Math.floor(video.currentTime / 60);
+    if (minutes < 10) {
+        minutes = '0' + String(minutes);
+    }
+
+    // Get seconds
+    let seconds = Math.floor(video.currentTime % 60);
+    if (seconds < 10) {
+        seconds = '0' + String(seconds);
+    }
+
+    timestamp.innerText = `${minutes}:${seconds}`;
+}
+
+function setProgress() {
+    video.currentTime = (+progress.value * video.duration) / 100;
+}
+
 video.addEventListener('click', playPause);
 video.addEventListener('play', updateIcon);
 video.addEventListener('pause', updateIcon);
+video.addEventListener('timeupdate', updateProgress);
 playBtn.addEventListener('click', playPause);
 stopBtn.addEventListener('click', stop);
+progress.addEventListener('click', setProgress);
